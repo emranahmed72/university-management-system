@@ -124,6 +124,7 @@ public class AdminService {
         user.setAccountLocked(false);
         user.setAccountExpired(false);
         user.setAccountLocked(false);
+        user.setEnabled(true);
 
         User user1 = this.userService.createUser(user);//save the specific user in user table
 
