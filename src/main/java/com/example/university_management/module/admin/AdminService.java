@@ -5,11 +5,14 @@ import com.example.university_management.acl.auth.entity.User;
 import com.example.university_management.acl.auth.repository.RoleRepo;
 import com.example.university_management.acl.auth.repository.UserRepo;
 import com.example.university_management.acl.auth.service.UserService;
+import com.example.university_management.module.department.Department;
+import com.example.university_management.module.department.DepartmentRepo;
 import com.example.university_management.module.student.Student;
 import com.example.university_management.module.student.StudentRepo;
 import com.example.university_management.module.teacher.Teacher;
 import com.example.university_management.module.teacher.TeacherRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -29,6 +32,10 @@ public class AdminService {
     private RoleRepo roleRepo;
     @Autowired
     private UserService userService;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private DepartmentRepo departmentRepo;
 
     public Admin get(Long id) {
         Admin admin = this.adminRepo.findById(id).orElse(null);
@@ -77,11 +84,10 @@ public class AdminService {
 
     @Transactional
     public Student addStudent(Student student) throws Exception {
-        Student student1 = this.studentRepo.save(student);//save the specific user in student table
         User user = new User();
-        user.setUserName(student1.getName());
-        user.setEmail(student1.getEmail());
-        user.setPassword("1234");
+        user.setUserName(student.getName());
+        user.setEmail(student.getEmail());
+        user.setPassword(this.bCryptPasswordEncoder.encode("1234"));
 
         Role roleStudent = this.roleRepo.getRoleByRoleName("STUDENT");
 
@@ -95,17 +101,19 @@ public class AdminService {
         user.setAccountExpired(false);
         user.setPasswordExpired(false);
 
-        this.userService.createUser(user);//save the specific user in user table
+        User user2 = this.userService.createUser(user);//save the specific user in user table
+
+        student.setUser(user2);
+        Student student1 = this.studentRepo.save(student);
 
         return student1;
     }
 
     public Teacher addTeacher(Teacher teacher) throws Exception{
-        Teacher teacher1=this.teacherRepo.save(teacher);//save the specific user in teacher table
         User user=new User();
-        user.setPassword("1234");
-        user.setEmail(teacher1.getEmail());
-        user.setUserName(teacher1.getName());
+        user.setPassword(this.bCryptPasswordEncoder.encode("1234"));
+        user.setEmail(teacher.getEmail());
+        user.setUserName(teacher.getName());
 
         Role roleTeacher=this.roleRepo.getRoleByRoleName("TEACHER");
 
@@ -116,10 +124,16 @@ public class AdminService {
         user.setAccountExpired(false);
         user.setAccountLocked(false);
 
-        this.userService.createUser(user);//save the specific user in user table
+        User user1 = this.userService.createUser(user);//save the specific user in user table
+
+        teacher.setUser(user1);
+        Teacher teacher1 = this.teacherRepo.save(teacher);
 
         return teacher1;
+    }
 
+    public Department addDpt(Department department) {
+        return this.departmentRepo.save(department);
     }
 
 

@@ -11,6 +11,8 @@ import com.example.university_management.acl.auth.repository.UserRepo;
 import com.example.university_management.acl.auth.service.UserService;
 import com.example.university_management.entity.system.SystemMenu;
 import com.example.university_management.entity.system.SystemMenuAuthorization;
+import com.example.university_management.module.admin.Admin;
+import com.example.university_management.module.admin.AdminRepo;
 import com.example.university_management.repository.system.SystemMenuAuthorizationRepository;
 import com.example.university_management.repository.system.SystemMenuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -39,6 +42,9 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 
     @Autowired
     private RequestUrlRepository requestUrlRepository;
+
+    @Autowired
+    AdminRepo adminRepo;
 
     @Autowired
     private SystemMenuAuthorizationRepository systemMenuAuthorizationRepository;
@@ -71,6 +77,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         }
     }
 
+    @Transactional
     public void createAppBasicUsers() throws Exception {
 
         Role roleSuperAdmin = this.roleRepo.getRoleByRoleName("ROLE_SUPER_ADMIN");
@@ -102,6 +109,13 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 
 
             superAdmin = this.userService.createUser(superAdmin);
+
+            Admin admin = new Admin();
+            admin.setName("admin");
+            admin.setEmail("emran0744@gmail.com");
+            admin.setUser(superAdmin);
+            this.adminRepo.save(admin);
+
             System.out.println("=========Super Admin Created========== " + superAdmin.getUserName());
         }
     }
