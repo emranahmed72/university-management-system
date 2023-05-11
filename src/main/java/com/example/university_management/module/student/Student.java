@@ -72,7 +72,7 @@ public class Student {
     @ManyToOne(fetch = FetchType.EAGER)
     private Department department;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     private User user;
 
 }

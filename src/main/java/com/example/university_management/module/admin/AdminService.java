@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -136,6 +137,12 @@ public class AdminService {
         return this.departmentRepo.save(department);
     }
 
+    public List<Teacher> getAllTeacher() {
+        return this.teacherRepo.findAll();
+    }
 
+    public List<Student> getAllStudent() {
+        return this.studentRepo.findAll();
+    }
 
 }

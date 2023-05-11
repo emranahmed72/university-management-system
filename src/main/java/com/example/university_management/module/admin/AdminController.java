@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/admin")
 @CrossOrigin("*")
@@ -51,6 +53,18 @@ public class AdminController {
     public ResponseEntity<?> addDepartment(@RequestBody Department department) {
         Department department1 = this.adminService.addDpt(department);
         return new ResponseEntity<>(department1, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllTeach")
+    public ResponseEntity<?> getAllTeach() {
+        List<Teacher> teacherList = this.adminService.getAllTeacher();
+        return new ResponseEntity<>(teacherList, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllStudent")
+    public ResponseEntity<?> getALlStud() {
+        List<Student> studentList = this.adminService.getAllStudent();
+        return new ResponseEntity<>(studentList, HttpStatus.OK);
     }
 
 
