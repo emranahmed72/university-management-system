@@ -58,13 +58,13 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
             this.roleRepo.save(roleInst1);
         }
 
-        chkRoleExists = this.roleRepo.getRoleByRoleName("ROLE_ADMIN");
+        chkRoleExists = this.roleRepo.getRoleByRoleName("TREACHER");
         if (chkRoleExists == null) {
             Role roleInst2 = new Role("ROLE_ADMIN", "");
             this.roleRepo.save(roleInst2);
         }
 
-        chkRoleExists = this.roleRepo.getRoleByRoleName("ROLE_USER");
+        chkRoleExists = this.roleRepo.getRoleByRoleName("STUDENT");
         if (chkRoleExists == null) {
             Role roleInst3 = new Role("ROLE_USER", "");
             this.roleRepo.save(roleInst3);
