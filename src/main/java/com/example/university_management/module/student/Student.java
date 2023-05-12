@@ -2,6 +2,7 @@ package com.example.university_management.module.student;
 
 import com.example.university_management.acl.auth.entity.User;
 import com.example.university_management.module.department.Department;
+import com.example.university_management.module.teacher.Teacher;
 import lombok.*;
 
 import javax.persistence.*;
@@ -74,5 +75,16 @@ public class Student {
 
     @OneToOne(fetch = FetchType.EAGER)
     private User user;
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
+    @ManyToOne
+    public Teacher teacher;
 
 }

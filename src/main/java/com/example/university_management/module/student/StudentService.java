@@ -18,6 +18,10 @@ public class StudentService {
     @Autowired
     private TeacherRepo teacherRepo;
 
+    public Student getStudent(Long studentId){
+        return this.studentRepo.findById(studentId).orElse(null);
+    }
+
     public Boolean addRequest(Long teacherId){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
@@ -32,6 +36,7 @@ public class StudentService {
             StudentRequest studentRequest = new StudentRequest();
             studentRequest.setStudent(student);
             studentRequest.setTeacher(teacher);
+            studentRequest.setReqState(3);
             studentRequestRepo.save(studentRequest);
             return true;
 
