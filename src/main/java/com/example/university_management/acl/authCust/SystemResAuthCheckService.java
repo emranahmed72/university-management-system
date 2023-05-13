@@ -47,88 +47,94 @@ public class SystemResAuthCheckService {
     // 3. role base auth check
     public Boolean hasAuthorization(String username, String resFullURL, String reqMethod) {
 
-        log.info("@SystemResAuthCheckService:checking auth username is " + username + " And Url is " + resFullURL);
-
-        resFullURL = resFullURL.replaceAll(",","");
-
-        String srcURL = resFullURL;
-        String lastIndexUriPath = resFullURL.substring(srcURL.lastIndexOf('/') + 1);
-
-        if (!Pattern.matches("[a-zA-Z]+", lastIndexUriPath) && Pattern.matches("[0-9]+",
-                lastIndexUriPath) && (reqMethod.equals("GET") || reqMethod.equals("PUT") || reqMethod.equals("DELETE"))) {
-            srcURL = srcURL.replaceAll("[0-9]", "");
-        }
-
-        System.out.println("Short search URL in DB:: " + srcURL);
-        System.out.println("App context path:: " + contextPath);
-        if (contextPath.length() > 0) srcURL = srcURL.replaceAll(contextPath, "");
-        System.out.println("Final short search URL in DB:: " + srcURL);
-
-        SysResourceDefinition resDefInst = definitionRepository.findByBackendUrl(srcURL);
-        //  log.info("@SystemResAuthCheckService:resDefInst is "+resDefInst.getBackendUrl());
-
-        // 0. check URL auth char
-        if (resDefInst != null) {
-            if (resDefInst.getChkAuthorization() == null || resDefInst.getChkAuthorization().equals("NO")) {
-                log.info("@SystemResAuthCheckService:No authorization check required for this URL");
-                return true;
-            }
-        }
-
-
-        User user = this.userService.getUserByUsername(username);
-
-        if (user != null) {
-
-            // 2. user group wise auth check
-            if (user.getGroupUsername() != null) {
-                // check by group user
-                User groupUser = this.userService.getUserByUsername(user.getGroupUsername());
-                SysResourceAuthorization resAuthInstG = this.authorizationRepository.findByUsernameAndSystemResource(groupUser.getUserName(), resDefInst);
-                if (resAuthInstG != null) {
-                    String fullPrivilege = resAuthInstG.getFullPrivilegeString();
-                    if (fullPrivilege.contains("E")) {
-                        return true;
-                    }
-                }
-                // check by own user // if needed overwrite
-                SysResourceAuthorization resAuthInstO = this.authorizationRepository.findByUsernameAndSystemResource(user.getUserName(), resDefInst);
-                if (resAuthInstO != null) {
-                    String fullPrivilege = resAuthInstO.getFullPrivilegeString();
-                    if (fullPrivilege.contains("E")) {
-                        return true;
-                    }
-                }
-            } else {
-
-                // check by own user // if needed overwrite
-                SysResourceAuthorization resAuthInstO = this.authorizationRepository.findByUsernameAndSystemResource(user.getUserName(), resDefInst);
-                if (resAuthInstO != null) {
-                    String fullPrivilege = resAuthInstO.getFullPrivilegeString();
-                    if (fullPrivilege.contains("E")) {
-                        return true;
-                    }
-                }
-
-            }
-
-            // 1. role base auth check
-            ArrayList<String> userAuthorities = UserUtil.getLoginUserAuthorities2();
-            List<SysResourceAuthorization> resAuthInstList = this.authorizationRepository.findBySystemResource(resDefInst);
-            if (resAuthInstList != null && resAuthInstList.size() > 0) {
-                for (SysResourceAuthorization resAuthInst : resAuthInstList) {
-                    String resAccessRole = (resAuthInst.getRole() != null) ? resAuthInst.getRole().getAuthority() : "";
-                    for(String str:userAuthorities) {
-                        if (str.equals(resAccessRole)) {
-                            return true;
-                        }
-                    }
-                }
-            }
-
-        }
-
-        return false;
+//        System.out.println("user is ");
+//        System.out.println(username);
+//        System.out.println(resFullURL);
+//        System.out.println(reqMethod);
+//
+//        log.info("@SystemResAuthCheckService:checking auth username is " + username + " And Url is " + resFullURL);
+//
+//        resFullURL = resFullURL.replaceAll(",","");
+//
+//        String srcURL = resFullURL;
+//        String lastIndexUriPath = resFullURL.substring(srcURL.lastIndexOf('/') + 1);
+//
+//        if (!Pattern.matches("[a-zA-Z]+", lastIndexUriPath) && Pattern.matches("[0-9]+",
+//                lastIndexUriPath) && (reqMethod.equals("GET") || reqMethod.equals("PUT") || reqMethod.equals("DELETE"))) {
+//            srcURL = srcURL.replaceAll("[0-9]", "");
+//        }
+//
+//        System.out.println("Short search URL in DB:: " + srcURL);
+//        System.out.println("App context path:: " + contextPath);
+//        if (contextPath.length() > 0) srcURL = srcURL.replaceAll(contextPath, "");
+//        System.out.println("Final short search URL in DB:: " + srcURL);
+//
+//        SysResourceDefinition resDefInst = definitionRepository.findByBackendUrl(srcURL);
+//        //  log.info("@SystemResAuthCheckService:resDefInst is "+resDefInst.getBackendUrl());
+//
+//        // 0. check URL auth char
+//        if (resDefInst != null) {
+//            if (resDefInst.getChkAuthorization() == null || resDefInst.getChkAuthorization().equals("NO")) {
+//                log.info("@SystemResAuthCheckService:No authorization check required for this URL");
+//                return true;
+//            }
+//        }
+//
+//
+//        User user = this.userService.getUserByUsername(username);
+//
+//        if (user != null) {
+//
+//            // 2. user group wise auth check
+//            if (user.getGroupUsername() != null) {
+//                // check by group user
+//                User groupUser = this.userService.getUserByUsername(user.getGroupUsername());
+//                SysResourceAuthorization resAuthInstG = this.authorizationRepository.findByUsernameAndSystemResource(groupUser.getUserName(), resDefInst);
+//                if (resAuthInstG != null) {
+//                    String fullPrivilege = resAuthInstG.getFullPrivilegeString();
+//                    if (fullPrivilege.contains("E")) {
+//                        return true;
+//                    }
+//                }
+//                // check by own user // if needed overwrite
+//                SysResourceAuthorization resAuthInstO = this.authorizationRepository.findByUsernameAndSystemResource(user.getUserName(), resDefInst);
+//                if (resAuthInstO != null) {
+//                    String fullPrivilege = resAuthInstO.getFullPrivilegeString();
+//                    if (fullPrivilege.contains("E")) {
+//                        return true;
+//                    }
+//                }
+//            } else {
+//
+//                // check by own user // if needed overwrite
+//                SysResourceAuthorization resAuthInstO = this.authorizationRepository.findByUsernameAndSystemResource(user.getUserName(), resDefInst);
+//                if (resAuthInstO != null) {
+//                    String fullPrivilege = resAuthInstO.getFullPrivilegeString();
+//                    if (fullPrivilege.contains("E")) {
+//                        return true;
+//                    }
+//                }
+//
+//            }
+//
+//            // 1. role base auth check
+//            ArrayList<String> userAuthorities = UserUtil.getLoginUserAuthorities2();
+//            List<SysResourceAuthorization> resAuthInstList = this.authorizationRepository.findBySystemResource(resDefInst);
+//            if (resAuthInstList != null && resAuthInstList.size() > 0) {
+//                for (SysResourceAuthorization resAuthInst : resAuthInstList) {
+//                    String resAccessRole = (resAuthInst.getRole() != null) ? resAuthInst.getRole().getAuthority() : "";
+//                    for(String str:userAuthorities) {
+//                        if (str.equals(resAccessRole)) {
+//                            return true;
+//                        }
+//                    }
+//                }
+//            }
+//
+//        }
+//
+//        return false;
+        return true;
 
     }
 

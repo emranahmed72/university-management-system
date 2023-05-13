@@ -43,7 +43,7 @@ public class AdminService {
         return admin;
     }
 
-    public Boolean deactivateOrActiveStudent(Long id) {
+    public User deactivateOrActiveStudent(Long id) {
         Student student = this.studentRepo.findById(id).orElse(null);
         if (student == null) {
             return null;
@@ -56,13 +56,13 @@ public class AdminService {
                 user.setAccountLocked(false);
                 this.userRepo.save(user);
             }
-            return true;
+            return user;
         }
     }
     @Autowired
     private TeacherRepo teacherRepo;
 
-    public Boolean deactivateOrActiveTeacher(Long id){
+    public User deactivateOrActiveTeacher(Long id){
         Teacher teacher=this.teacherRepo.findById(id).orElse(null);
         if(teacher==null){
             return null;
@@ -78,7 +78,7 @@ public class AdminService {
                 user.setAccountLocked(false);
                 this.userRepo.save(user);
             }
-            return true;
+            return user;
         }
 
     }
@@ -125,11 +125,12 @@ public class AdminService {
         user.setAccountExpired(false);
         user.setAccountLocked(false);
         user.setEnabled(true);
+        user.setPasswordExpired(false);
 
         User user1 = this.userService.createUser(user);//save the specific user in user table
 
         teacher.setUser(user1);
-        Teacher teacher1 = this.teacherRepo.save(teacher);
+        Teacher teacher1 = this.teacherRepo.save(teacher);//save the specific teacher in teacher table
 
         return teacher1;
     }

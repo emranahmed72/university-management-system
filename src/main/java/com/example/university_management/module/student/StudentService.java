@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class StudentService {
@@ -21,11 +22,13 @@ public class StudentService {
     public Student getStudent(Long studentId){
         return this.studentRepo.findById(studentId).orElse(null);
     }
-
+    
+    @Transactional
     public Boolean addRequest(Long teacherId){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
-        Student student = this.studentRepo.findByName(currentUserName);
+        Student student = this.studentRepo.findByname(currentUserName);
+
 
         Teacher teacher = this.teacherRepo.findById(teacherId).orElse(null);
 

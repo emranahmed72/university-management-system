@@ -2,6 +2,7 @@ package com.example.university_management.module.teacher;
 
 import com.example.university_management.acl.auth.entity.User;
 import com.example.university_management.module.department.Department;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -73,6 +74,7 @@ public class Teacher {
     private Department department;
 
     @OneToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
     private User user;
 
 }

@@ -1,5 +1,6 @@
 package com.example.university_management.module.admin;
 
+import com.example.university_management.acl.auth.entity.User;
 import com.example.university_management.module.department.Department;
 import com.example.university_management.module.student.Student;
 import com.example.university_management.module.teacher.Teacher;
@@ -26,13 +27,13 @@ public class AdminController {
 
     @GetMapping("/deactivateStudent/{id}")
     public ResponseEntity<?> deactivateStudent(@PathVariable(name = "id") Long id) {
-        Boolean deactivated = this.adminService.deactivateOrActiveStudent(id);
+        User deactivated = this.adminService.deactivateOrActiveStudent(id);
         return new ResponseEntity<>(deactivated, HttpStatus.OK);
     }
 
     @GetMapping("/deactivateTeacher/{id}")
     public ResponseEntity<?> deactivateTeacher(@PathVariable(name = "id") Long id) {
-        Boolean deactivated = this.adminService.deactivateOrActiveTeacher(id);
+        User deactivated = this.adminService.deactivateOrActiveTeacher(id);
         return new ResponseEntity<>(deactivated, HttpStatus.OK);
     }
 

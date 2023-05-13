@@ -49,11 +49,11 @@ public class TeacherService {
                 studentRequest.setReqState(1);//1 means accepted
                 Student student = this.studentRepo.findById(studentRequest.getStudent().getId()).orElse(null);
                 student.setTeacher(studentRequest.getTeacher());
-                studentRepo.save(student);
+                studentRepo.save(student);////update in student request table
             } else if (studentRequest.getReqState() == 3 && !acceptStatus) {
                 studentRequest.setReqState(2);//2 means rejected.
             }
-            this.studentRequestRepo.save(studentRequest);
+            this.studentRequestRepo.save(studentRequest);//update in student request table
             return true;
         }
     }

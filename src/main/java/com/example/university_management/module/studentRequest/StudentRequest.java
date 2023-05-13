@@ -17,11 +17,18 @@ public class StudentRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Student student;
+//    @ManyToOne
+//    private Student student;
+
+     @ManyToOne(fetch = FetchType.EAGER)
+     @JoinColumn(name = "student_id", nullable = false)
+     private Student student;
 
     @ManyToOne
     private Teacher teacher;
+
+    // if 1 request accepted, 2 rejected, 3 submit
+    private Integer reqState;
 
 
 
@@ -33,8 +40,7 @@ public class StudentRequest {
         this.reqState = reqState;
     }
 
-    // if 1 , accepted, 2 rejected, 3 submit
-    private Integer reqState;
+
 
     public Long getId() {
         return id;

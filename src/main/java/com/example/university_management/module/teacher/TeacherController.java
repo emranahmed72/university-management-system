@@ -32,9 +32,9 @@ public class TeacherController {
     @PutMapping("/acceptRequest")
     public ResponseEntity<?> acceptRequest(@RequestBody HashMap<String, Object> data) {
 
-        Long id = (Long) data.get("id");
+        Integer id = (Integer) data.get("id");
         Boolean acceptStatus = (Boolean) data.get("status");
-        Boolean acceptRequest = this.teacherService.acceptRequest(id, acceptStatus);
+        Boolean acceptRequest = this.teacherService.acceptRequest(Long.valueOf(id), acceptStatus);
         return new ResponseEntity<>(acceptRequest, HttpStatus.OK);
 
     }
