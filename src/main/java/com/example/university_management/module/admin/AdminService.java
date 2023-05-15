@@ -12,6 +12,8 @@ import com.example.university_management.module.student.StudentRepo;
 import com.example.university_management.module.teacher.Teacher;
 import com.example.university_management.module.teacher.TeacherRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +40,11 @@ public class AdminService {
     @Autowired
     private DepartmentRepo departmentRepo;
 
-    public Admin get(Long id) {
-        Admin admin = this.adminRepo.findById(id).orElse(null);
+    public Admin get() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserName = authentication.getName();
+        Admin admin = this.adminRepo.findByName(currentUserName);
         return admin;
     }
 

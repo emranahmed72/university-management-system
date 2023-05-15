@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/passChange")
+@RequestMapping("/passChangeAndGetRule")
 @CrossOrigin("*")
 public class UserController {
     @Autowired
@@ -22,5 +22,9 @@ public class UserController {
         passwordService.passwordChange(pass.get("password"));
 
         return new ResponseEntity<>("Done", HttpStatus.OK);
+    }
+    @GetMapping ("/getRule")
+    public ResponseEntity<?> getRule() {
+        return new ResponseEntity<>(passwordService.getUserRole(), HttpStatus.OK);
     }
 }

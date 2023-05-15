@@ -19,9 +19,9 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-    @GetMapping("/get/{id}")
-    public ResponseEntity<?> getadmin(@PathVariable(name = "id") Long id) {
-        Admin admin = this.adminService.get(id);
+    @GetMapping("/get")
+    public ResponseEntity<?> getadmin() {
+        Admin admin = this.adminService.get();
         return new ResponseEntity<>(admin, HttpStatus.OK);
     }
 

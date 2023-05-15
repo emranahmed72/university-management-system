@@ -17,9 +17,9 @@ public class TeacherController {
     @Autowired
     private TeacherService teacherService;
 
-    @GetMapping("/getTeacher/{id}")
-    public ResponseEntity<?> getTeacher(@PathVariable(name = "id") Long id) {
-        Teacher teacher = this.teacherService.getTeacher(id);
+    @GetMapping("/getTeacher")
+    public ResponseEntity<?> getTeacher() {
+        Teacher teacher = this.teacherService.getTeacher();
         return new ResponseEntity<>(teacher, HttpStatus.OK);
     }
 

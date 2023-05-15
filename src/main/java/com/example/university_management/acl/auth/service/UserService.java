@@ -1,13 +1,17 @@
 package com.example.university_management.acl.auth.service;
 
+import com.example.university_management.acl.auth.entity.Role;
 import com.example.university_management.acl.auth.entity.User;
 import com.example.university_management.acl.auth.repository.UserRepo;
 import com.example.university_management.exception.AlreadyExistsException;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {

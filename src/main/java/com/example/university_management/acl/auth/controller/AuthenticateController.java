@@ -51,6 +51,30 @@ public class AuthenticateController {
         return ResponseEntity.ok(jwtResponse);
     }
 
+//    @PostMapping("/generateToken")
+//    public ResponseEntity<?> generateToken(@Valid @RequestBody JwtRequest jwtRequest) throws Exception {
+//        try {
+//            authenticate(jwtRequest.getUsername(), jwtRequest.getPassword());
+//        } catch (NotFoundException e) {
+//            throw new Exception("User not found");
+//        }
+//
+//        // get user's role from the database
+//        User user = UserRepo.findByUsername(jwtRequest.getUsername());
+//        Role role = RoleRepo.findByUserId(user.getId());
+//
+//        // build JWT token with user's role as a claim
+//        String token = Jwts.builder()
+//                .setSubject(jwtRequest.getUsername())
+//                .claim("role", role.getName())
+//                .signWith(SignatureAlgorithm.HS256, "secret")
+//                .compact();
+//
+//        JwtResponse jwtResponse = new JwtResponse(token);
+//        return ResponseEntity.ok(jwtResponse);
+//    }
+
+
     private void authenticate(String username, String password) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));

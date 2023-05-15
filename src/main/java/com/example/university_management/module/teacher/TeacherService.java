@@ -22,8 +22,11 @@ public class TeacherService {
     @Autowired
     private StudentRepo studentRepo;
 
-    public Teacher getTeacher(Long id) {
-        return teacherRepo.findById(id).orElse(null);
+    public Teacher getTeacher() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserName = authentication.getName();
+        Teacher teacher = this.teacherRepo.findByName(currentUserName);
+        return teacher;
     }
 
     public List<StudentRequest> getAllRequest() {
